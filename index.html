@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lời Tri Ân Thầy Cô – Kho Báu Tri Ân</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #e07a5f;
+      --primary-dark: #c45d45;
+      --secondary: #3d405b;
+      --accent: #81b29a;
+      --bg: #f4f1de;
+      --card: #ffffff;
+      --text: #3d405b;
+      --soft: #f2cc8f;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Nunito', sans-serif;
+      background: linear-gradient(160deg, #f4f1de 0%, #e8f0e8 40%, #fdf6e9 100%);
+      min-height: 100vh;
+      color: var(--text);
+      overflow-x: hidden;
+    }
+
+    /* Decorative background elements */
+    .bg-decor {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+    .bg-decor span {
+      position: absolute;
+      border-radius: 50%;
+      opacity: 0.12;
+    }
+    .bg-decor span:nth-child(1) { width: 320px; height: 320px; background: #e07a5f; top: -80px; left: -60px; }
+    .bg-decor span:nth-child(2) { width: 220px; height: 220px; background: #81b29a; bottom: 10%; right: -40px; }
+    .bg-decor span:nth-child(3) { width: 160px; height: 160px; background: #f2cc8f; top: 40%; left: 5%; }
+
+    .container {
+      position: relative;
+      z-index: 1;
+      max-width: 920px;
+      margin: 0 auto;
+      padding: 24px 16px 120px;
+    }
+
+    /* Header */
+    header {
+      text-align: center;
+      margin-bottom: 28px;
+      animation: fadeDown 0.7s ease;
+    }
+    header h1 {
+      font-family: 'Quicksand', sans-serif;
+      font-size: clamp(1.7rem, 5vw, 2.4rem);
+      font-weight: 700;
+      color: var(--secondary);
+      line-height: 1.25;
+    }
+    header h1 span {
+      color: var(--primary);
+    }
+    header p {
+      margin-top: 8px;
+      font-size: 1.05rem;
+      color: #5c6278;
+      font-weight: 600;
+    }
+
+    /* Teacher Profile Circle */
+    .teacher-section {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 36px;
+      animation: fadeUp 0.8s ease 0.15s both;
+    }
+
+    .profile-wrapper {
+      position: relative;
+      width: 210px;
+      height: 210px;
+    }
+
+    .profile-ring {
+      position: absolute;
+      inset: -8px;
+      border-radius: 50%;
+      background: conic-gradient(from 120deg, #e07a5f, #f2cc8f, #81b29a, #e07a5f);
+      animation: spin 12s linear infinite;
+    }
+
+    .profile-circle {
+      position: relative;
+      width: 210px;
+      height: 210px;
+      border-radius: 50%;
+      background: linear-gradient(145deg, #fff 0%, #fef6ee 100%);
+      border: 6px solid #fff;
+      box-shadow: 0 12px 32px rgba(61, 64, 91, 0.18);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    /* Cartoon teacher face (pure CSS + SVG) */
+    .teacher-avatar {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .teacher-avatar svg {
+      width: 88%;
+      height: 88%;
+    }
+
+    .teacher-name {
+      margin-top: 16px;
+      font-family: 'Quicksand', sans-serif;
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: var(--secondary);
+    }
+    .teacher-title {
+      font-size: 0.95rem;
+      color: #6b7280;
+      font-weight: 600;
+      margin-top: 2px;
+    }
+
+    /* Comment Wall */
+    .wall-title {
+      text-align: center;
+      font-family: 'Quicksand', sans-serif;
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 18px;
+      color: var(--secondary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+    .wall-title::before,
+    .wall-title::after {
+      content: "";
+      height: 2px;
+      width: 40px;
+      background: linear-gradient(90deg, transparent, var(--primary));
+      border-radius: 2px;
+    }
+    .wall-title::after {
+      background: linear-gradient(90deg, var(--primary), transparent);
+    }
+
+    #comments-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 16px;
+      min-height: 120px;
+    }
+
+    .comment-card {
+      background: var(--card);
+      border-radius: 18px;
+      padding: 18px 18px 16px;
+      box-shadow: 0 6px 20px rgba(61, 64, 91, 0.08);
+      border: 1px solid rgba(224, 122, 95, 0.12);
+      position: relative;
+      animation: popIn 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .comment-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 28px rgba(61, 64, 91, 0.12);
+    }
+
+    .comment-card::before {
+      content: """;
+      position: absolute;
+      top: 8px;
+      left: 14px;
+      font-size: 2.8rem;
+      color: rgba(224, 122, 95, 0.18);
+      font-family: Georgia, serif;
+      line-height: 1;
+    }
+
+    .comment-text {
+      font-size: 0.98rem;
+      line-height: 1.55;
+      color: var(--text);
+      margin-bottom: 12px;
+      position: relative;
+      z-index: 1;
+      word-break: break-word;
+    }
+
+    .comment-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.82rem;
+      color: #7a8199;
+    }
+    .comment-author {
+      font-weight: 700;
+      color: var(--primary-dark);
+    }
+    .comment-time {
+      font-size: 0.78rem;
+    }
+
+    .empty-state {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 40px 20px;
+      color: #8a90a5;
+      font-weight: 600;
+    }
+    .empty-state svg {
+      width: 64px;
+      height: 64px;
+      margin-bottom: 12px;
+      opacity: 0.5;
+    }
+
+    /* Form fixed bottom */
+    .form-wrapper {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(12px);
+      border-top: 1px solid rgba(224, 122, 95, 0.15);
+      padding: 14px 16px 18px;
+      z-index: 50;
+      box-shadow: 0 -8px 30px rgba(61, 64, 91, 0.08);
+    }
+
+    .form-inner {
+      max-width: 920px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .form-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    input, textarea {
+      font-family: 'Nunito', sans-serif;
+      border: 2px solid #e8e4d9;
+      border-radius: 14px;
+      padding: 12px 16px;
+      font-size: 0.98rem;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      background: #fff;
+      color: var(--text);
+    }
+    input:focus, textarea:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 4px rgba(224, 122, 95, 0.15);
+    }
+
+    #name-input {
+      width: 160px;
+      flex-shrink: 0;
+    }
+
+    #message-input {
+      flex: 1;
+      min-width: 200px;
+      resize: none;
+      height: 48px;
+    }
+
+    button[type="submit"] {
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: white;
+      border: none;
+      border-radius: 14px;
+      padding: 0 24px;
+      height: 48px;
+      font-family: 'Quicksand', sans-serif;
+      font-weight: 700;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: transform 0.15s, box-shadow 0.15s;
+      box-shadow: 0 4px 14px rgba(224, 122, 95, 0.35);
+      white-space: nowrap;
+    }
+    button[type="submit"]:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 18px rgba(224, 122, 95, 0.45);
+    }
+    button[type="submit"]:active {
+      transform: translateY(0);
+    }
+    button[type="submit"]:disabled {
+      opacity: 0.65;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .char-count {
+      font-size: 0.78rem;
+      color: #9ca3af;
+      text-align: right;
+      margin-top: -4px;
+    }
+
+    /* Toast */
+    .toast {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%) translateY(-80px);
+      background: var(--accent);
+      color: white;
+      padding: 12px 24px;
+      border-radius: 50px;
+      font-weight: 700;
+      font-size: 0.95rem;
+      box-shadow: 0 8px 24px rgba(129, 178, 154, 0.4);
+      z-index: 100;
+      transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+      pointer-events: none;
+    }
+    .toast.show {
+      transform: translateX(-50%) translateY(0);
+    }
+
+    /* Loading */
+    .loading {
+      text-align: center;
+      padding: 30px;
+      color: #8a90a5;
+      font-weight: 600;
+    }
+
+    /* Animations */
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    @keyframes fadeDown {
+      from { opacity: 0; transform: translateY(-16px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes popIn {
+      from { opacity: 0; transform: scale(0.88) translateY(12px); }
+      to { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    /* Responsive */
+    @media (max-width: 600px) {
+      .profile-wrapper, .profile-circle {
+        width: 170px;
+        height: 170px;
+      }
+      .form-row {
+        flex-direction: column;
+      }
+      #name-input {
+        width: 100%;
+      }
+      button[type="submit"] {
+        width: 100%;
+      }
+      #comments-container {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-decor">
+    <span></span><span></span><span></span>
+  </div>
+
+  <div class="container">
+    <header>
+      <h1>Lời <span>Tri Ân</span> Thầy Cô</h1>
+      <p>Những lời cảm ơn chân thành từ học trò</p>
+    </header>
+
+    <!-- Teacher Profile -->
+    <section class="teacher-section">
+      <div class="profile-wrapper">
+        <div class="profile-ring"></div>
+        <div class="profile-circle">
+          <div class="teacher-avatar">
+            <!-- Cute cartoon male teacher SVG -->
+            <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+              <!-- Head -->
+              <circle cx="100" cy="95" r="58" fill="#f5d0b5"/>
+              <!-- Hair -->
+              <path d="M45 85 Q50 40 100 38 Q150 40 155 85 Q145 55 100 52 Q55 55 45 85" fill="#4a3728"/>
+              <ellipse cx="100" cy="52" rx="48" ry="18" fill="#4a3728"/>
+              <!-- Ears -->
+              <ellipse cx="43" cy="100" rx="10" ry="14" fill="#e8b89a"/>
+              <ellipse cx="157" cy="100" rx="10" ry="14" fill="#e8b89a"/>
+              <!-- Glasses -->
+              <circle cx="78" cy="95" r="18" fill="none" stroke="#3d405b" stroke-width="4"/>
+              <circle cx="122" cy="95" r="18" fill="none" stroke="#3d405b" stroke-width="4"/>
+              <line x1="96" y1="95" x2="104" y2="95" stroke="#3d405b" stroke-width="3"/>
+              <!-- Eyes -->
+              <circle cx="78" cy="95" r="6" fill="#3d405b"/>
+              <circle cx="122" cy="95" r="6" fill="#3d405b"/>
+              <circle cx="80" cy="93" r="2.2" fill="#fff"/>
+              <circle cx="124" cy="93" r="2.2" fill="#fff"/>
+              <!-- Eyebrows -->
+              <path d="M62 78 Q78 72 92 78" fill="none" stroke="#4a3728" stroke-width="3" stroke-linecap="round"/>
+              <path d="M108 78 Q122 72 138 78" fill="none" stroke="#4a3728" stroke-width="3" stroke-linecap="round"/>
+              <!-- Nose -->
+              <path d="M100 102 Q104 112 98 114" fill="none" stroke="#d4a08a" stroke-width="3" stroke-linecap="round"/>
+              <!-- Smile -->
+              <path d="M82 125 Q100 140 118 125" fill="none" stroke="#c45d45" stroke-width="3.5" stroke-linecap="round"/>
+              <!-- Collar / Shirt -->
+              <path d="M55 155 Q100 175 145 155 L150 200 L50 200 Z" fill="#3d405b"/>
+              <path d="M85 158 L100 175 L115 158" fill="#e07a5f"/>
+              <!-- Tie -->
+              <path d="M95 158 L100 185 L105 158" fill="#e07a5f"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+      <div class="teacher-name">Thầy / Cô yêu quý</div>
+      <div class="teacher-title">Người lái đò thầm lặng</div>
+    </section>
+
+    <!-- Comments Wall -->
+    <div class="wall-title">Bức tường tri ân</div>
+    <div id="comments-container">
+      <div class="loading">Đang tải lời tri ân...</div>
+    </div>
+  </div>
+
+  <!-- Fixed Form -->
+  <div class="form-wrapper">
+    <form class="form-inner" id="tribute-form">
+      <div class="form-row">
+        <input type="text" id="name-input" placeholder="Tên của bạn" maxlength="30" required autocomplete="off" />
+        <textarea id="message-input" placeholder="Viết lời tri ân chân thành gửi thầy cô..." maxlength="280" required></textarea>
+        <button type="submit" id="submit-btn">Gửi lời tri ân 💌</button>
+      </div>
+      <div class="char-count"><span id="char-count">0</span>/280</div>
+    </form>
+  </div>
+
+  <div class="toast" id="toast">Cảm ơn bạn đã gửi lời tri ân!</div>
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+
+  <script>
+    // =====================================================
+    // 1. THAY THẾ BẰNG CẤU HÌNH FIREBASE CỦA BẠN
+    // =====================================================
+    const firebaseConfig = {
+      apiKey: "AIzaSyB8diWiqzJCyf3SW3SS5w3dgzRFxO8QlDE",
+      authDomain: "loi-tri-an-thay-co.firebaseapp.com",
+      databaseURL: "https://loi-tri-an-thay-co-default-rtdb.asia-southeast1.firebasedatabase.app",
+      projectId: "loi-tri-an-thay-co",
+      storageBucket: "loi-tri-an-thay-co.firebasestorage.app",
+      messagingSenderId: "813176689943",
+      appId: "1:813176689943:web:2e9c1e55f68e49c4121352"
+    };
+
+    // Khởi tạo Firebase
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+    const commentsRef = db.ref('tributes');
+
+    // =====================================================
+    // 2. HIỂN THỊ COMMENT REAL-TIME
+    // =====================================================
+    const container = document.getElementById('comments-container');
+
+    commentsRef.orderByChild('timestamp').on('value', (snapshot) => {
+      const data = snapshot.val();
+      container.innerHTML = '';
+
+      if (!data) {
+        container.innerHTML = `
+          <div class="empty-state">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+            </svg>
+            <p>Chưa có lời tri ân nào.<br>Hãy là người đầu tiên gửi lời cảm ơn nhé!</p>
+          </div>`;
+        return;
+      }
+
+      // Chuyển object thành mảng và sắp xếp mới nhất lên đầu
+      const list = Object.entries(data)
+        .map(([id, item]) => ({ id, ...item }))
+        .sort((a, b) => b.timestamp - a.timestamp);
+
+      list.forEach(item => {
+        const card = document.createElement('div');
+        card.className = 'comment-card';
+        card.innerHTML = `
+          <div class="comment-text">${escapeHtml(item.message)}</div>
+          <div class="comment-meta">
+            <span class="comment-author">${escapeHtml(item.name)}</span>
+            <span class="comment-time">${formatTime(item.timestamp)}</span>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }, (error) => {
+      console.error("Firebase error:", error);
+      container.innerHTML = `
+        <div class="empty-state">
+          <p style="color:#c45d45; font-weight:700;">Không kết nối được Firebase</p>
+          <p style="margin-top:8px; font-size:0.9rem;">Lỗi: ${error.message}<br>Hãy mở F12 → Console để xem chi tiết</p>
+        </div>`;
+    });
+
+    // =====================================================
+    // 3. GỬI COMMENT
+    // =====================================================
+    const form = document.getElementById('tribute-form');
+    const nameInput = document.getElementById('name-input');
+    const messageInput = document.getElementById('message-input');
+    const submitBtn = document.getElementById('submit-btn');
+    const charCount = document.getElementById('char-count');
+    const toast = document.getElementById('toast');
+
+    messageInput.addEventListener('input', () => {
+      charCount.textContent = messageInput.value.length;
+    });
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const name = nameInput.value.trim();
+      const message = messageInput.value.trim();
+
+      if (!name || !message) return;
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Đang gửi...';
+
+      try {
+        await commentsRef.push({
+          name: name,
+          message: message,
+          timestamp: Date.now()
+        });
+
+        // Reset form
+        nameInput.value = '';
+        messageInput.value = '';
+        charCount.textContent = '0';
+
+        // Hiện toast
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 2800);
+      } catch (err) {
+        alert('Có lỗi xảy ra. Vui lòng thử lại!');
+        console.error(err);
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Gửi lời tri ân 💌';
+      }
+    });
+
+    // =====================================================
+    // Helpers
+    // =====================================================
+    function escapeHtml(text) {
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
+    function formatTime(ts) {
+      const diff = Date.now() - ts;
+      const minutes = Math.floor(diff / 60000);
+      if (minutes < 1) return 'Vừa xong';
+      if (minutes < 60) return `${minutes} phút trước`;
+      const hours = Math.floor(minutes / 60);
+      if (hours < 24) return `${hours} giờ trước`;
+      const days = Math.floor(hours / 24);
+      return `${days} ngày trước`;
+    }
+  </script>
+</body>
+</html>
